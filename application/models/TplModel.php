@@ -71,13 +71,27 @@ class TplModel extends CI_Model
     //     return $this->db->count_all_results();
     // }
 
+    public function getDate()
+    {
+        $timezone = new DateTimeZone('Asia/Jakarta');
+        $date = new DateTime();
+        $date->setTimeZone($timezone);
+        return $date->format('Y-m-d H:i:s');
+    }
 
-    public function get_po()
+
+    public function get_po($post = null)
     {
         $whs_code = $this->session->userdata('tpl_username');
         $sql = "select t1.*,t2.is_confirm, t2.noref, t2.remark, FORMAT(t2.created_at,'dd/MM/yyyy') as confirm_date from
         (select distinct whscode, tglpo, lifetimepo, nopo, namacust from poView where whscode = '$whs_code') t1
         left join  tpl_po t2 ON t1.nopo COLLATE SQL_Latin1_General_CP1_CI_AS = t2.nopo COLLATE SQL_Latin1_General_CP1_CI_AS";
+
+        if (!is_null($post)) {
+            $nopo = $post['nopo'];
+            $sql .= " WHERE t1.nopo = '$nopo'";
+        }
+
         $query = $this->db->query($sql);
         return $query;
     }
@@ -120,10 +134,31 @@ class TplModel extends CI_Model
         $this->db->insert('tpl_po', $data);
     }
 
+    public function editConfirmPO($post)
+    {
+        $set = array(
+            'noref' => $post['noref'],
+            'remark' => $post['remark'],
+            'updated_by' => $this->session->userdata('tpl_username'),
+            'updated_at' => $this->getDate()
+        );
+
+        $this->db->where('id', $post['id']);
+        $this->db->update('tpl_po', $set);
+    }
+
     public function getPoConfirmed($post)
     {
         $nopo = $post['nopo'];
         $sql = "select * from tpl_po where nopo = '$nopo'";
+        $query = $this->db->query($sql);
+        return $query;
+    }
+
+    public function getStock()
+    {
+        $whs_code = $this->session->userdata('tpl_username');
+        $sql = "select * from stockView where whscode = '$whs_code'";
         $query = $this->db->query($sql);
         return $query;
     }

@@ -228,6 +228,9 @@
 					<li <?= $this->uri->segment(1) == 'tpl/po' ? 'class="active"' : '' ?>>
 						<a href="<?= site_url('tpl/po') ?>"><i class="fa fa-folder"></i> <span>Purchase Order</span></a>
 					</li>
+					<li <?= $this->uri->segment(1) == 'tpl/stock' ? 'class="active"' : '' ?>>
+						<a href="<?= site_url('tpl/stock') ?>"><i class="fa fa-folder"></i> <span>stock</span></a>
+					</li>
 					<!-- <li class="treeview <?= $this->uri->segment(1) == 'report' ? 'active' : '' ?>">
 						<a href="#">
 							<i class="fa fa-pie-chart"></i> <span>Reports</span>

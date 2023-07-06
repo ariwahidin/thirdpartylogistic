@@ -1,8 +1,7 @@
-<table style="font-size: 12px;" class="table table-bordered table-striped" id="example">
+<table style="font-size: 10px;" class="table table-bordered table-striped" id="example">
     <thead>
         <tr>
             <th>No.</th>
-            <th>Code</th>
             <th>Tanggal PO</th>
             <th>Life Time PO</th>
             <th>No. PO</th>
@@ -18,7 +17,6 @@
         foreach ($po->result() as $data) { ?>
             <tr data-tr-nopo="<?= $data->nopo ?>">
                 <td><?= $no++ ?></td>
-                <td><?= $data->whscode ?></td>
                 <td><?= date("d/m/Y", strtotime($data->tglpo)) ?></td>
                 <td><?= date("d/m/Y", strtotime($data->lifetimepo)) ?></td>
                 <td><?= $data->nopo ?></td>
@@ -28,8 +26,8 @@
                 <td class="td_remark"><?= $data->remark ?></td>
                 <td>
                     <button onclick="loadModalDetail(this)" data-nopo="<?= $data->nopo ?>" class="btn <?= $data->is_confirm == 'y' ? 'btn-default' : 'btn-success'; ?>  btn-xs btnDetailConfirm" <?= $data->is_confirm == 'y' ? 'disabled' : ''; ?>><i class="fa fa-check"></i></button>
-                    <button data-nopo="<?= $data->nopo ?>" class="btn btn-primary btn-xs btnDetail"><i class="fa fa-edit"></i></button>
-                    <button data-nopo="<?= $data->nopo ?>" class="btn btn-info btn-xs btnDetail" disabled><i class="fa fa-eye"></i></button>
+                    <button onclick="loadEdit(this)" data-nopo="<?= $data->nopo ?>" class="btn <?= $data->is_confirm != 'y' ? 'btn-default' : 'btn-primary'; ?> btn-xs btnEdit" <?= $data->is_confirm != 'y' ? 'disabled' : ''; ?>><i class="fa fa-edit"></i></button>
+                    <button onclick="lihatDetail(this)" data-nopo="<?= $data->nopo ?>" class="btn btn-info btn-xs btnDetail"><i class="fa fa-eye"></i></button>
                 </td>
             </tr>
         <?php } ?>

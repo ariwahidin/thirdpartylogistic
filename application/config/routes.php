@@ -63,7 +63,11 @@ $route['dashboard'] = 'DashboardController/index';
 
 //Tpl
 $route['tpl/po'] = 'TplController/index';
+$route['tpl/stock'] = 'TplController/showStock';
 $route['tpl/detail'] = 'TplController/loadModalDetailPo';
 $route['tpl/validate'] = 'TplController/validate';
 $route['tpl/confirm'] = 'TplController/confirmPO';
 $route['tpl/tablepo'] = 'TplController/loadTablePo';
+$route['tpl/editconfirm'] = 'TplController/editConfirmPO';
+$route['tpl/getdetail'] = 'TplController/getJsonDetail';
+$route['tpl/showdetail'] = 'TplController/showDetailPo';

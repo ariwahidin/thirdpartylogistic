@@ -125,10 +125,66 @@ class TplController extends CI_Controller
         } else {
             $response = array(
                 'success' => true,
-                'message' => 'Gagal simpn data'
+                'message' => 'Gagal simpan data'
             );
         }
 
         echo json_encode($response);
+    }
+
+    public function getJsonDetail()
+    {
+        $post = $this->input->post();
+        $detail = $this->TplModel->cekPoConfirm($post);
+        $response = array(
+            'data' => $detail->result()
+        );
+        echo json_encode($response);
+    }
+
+    public function editConfirmPO()
+    {
+        $input_data = json_decode($this->input->raw_input_stream, true);
+        $this->TplModel->editConfirmPO($input_data);
+        if ($this->db->affected_rows() > 0) {
+            $po = $this->TplModel->getPoConfirmed($input_data);
+            $response = array(
+                'success' => true,
+                'confirm' => date("d/m/Y", strtotime($po->row()->created_at)),
+                'nopo' => $po->row()->nopo,
+                'noref' => $po->row()->noref,
+                'is_confirm' => $po->row()->is_confirm,
+                'remark' => $po->row()->remark,
+                'message' => 'Data berhasil diedit'
+            );
+        } else {
+            $response = array(
+                'success' => true,
+                'message' => 'Gagal edit data'
+            );
+        }
+
+        echo json_encode($response);
+    }
+
+    public function showDetailPo()
+    {
+        $post = $this->input->post();
+        $item = $this->TplModel->get_detail_po($post);
+        $po = $this->TplModel->get_po($post);
+        $data = array(
+            'item' => $item,
+            'po' => $po
+        );
+        $this->load->view('tpl/detail_po', $data);
+    }
+
+    public function showStock()
+    {
+        $stock = $this->TplModel->getStock();
+        $data = array(
+            'stock' => $stock
+        );
+        $this->template->load('template', 'tpl/stock', $data);
     }
 }
